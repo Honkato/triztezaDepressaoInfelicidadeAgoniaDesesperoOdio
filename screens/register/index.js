@@ -9,35 +9,30 @@ function Register({ navigation, route }) {
     const [name, setName] = useState('')
     const [CPF, setCPF] = useState('')
     const [user, setUser] = useState('')
-    let mexeu = true
 
     const storageNewUser = (key, value) => {
         AsyncStorage.setItem(key, value)
-        // mexeu = !mexeu
     }
     const getStorageUsers = async (key) => {
-        setUser(await AsyncStorage.getItem(key))
+        const val = await JSON.parse(AsyncStorage.getItem(key))
+        setUser(val)
         // setnome(valor)
     }
-    useEffect(() => {
+    useEffect(()=>{
         getStorageUsers('users')
-        // console.log()
-        // if (localStorage.getItem('conta') != undefined){
-        // navigation.navigate('Login')
-        // alreadyHaveAnAccount()
-        // }
-    }, [mexeu])
+    },[])
+    
 
     const registrateAnAccount = () => {
         // getStorageUsers('users')
         setUser([...user, { name: name, cpf: CPF }])
-        console.log(user);
-        storageNewUser('users', user)
+        storageNewUser('users', JSON.stringify([...user, { name: name, cpf: CPF }]))
     }
 
     const goCreateAnAccount = () => {
         // localStorage.setItem('dados', JSON.stringify({"name":name,"CPF":CPF,"password":password}))
-        Linking.openURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+        console.log(user);
+        // Linking.openURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
     }
     const alreadyHaveAnAccount = () => {
         // localStorage.setItem('dados', JSON.stringify({"name":name,"CPF":CPF,"password":password}))
@@ -57,6 +52,7 @@ function Register({ navigation, route }) {
                 <TouchableOpacity className="m-3 w-20 h-6 flex items-center justify-center rounded-lg bg-[#070C0A] text-[#9AEBA3]" onPress={() => registrateAnAccount()}>Registrate</TouchableOpacity>
                 <TouchableOpacity className="m-3 w-14 h-6 flex items-center justify-center rounded-lg bg-[#070C0A] text-[#9AEBA3]" onPress={() => alreadyHaveAnAccount()}>Login</TouchableOpacity>
                 <TouchableOpacity className="m-3 h-6 rounded-lg text-[#ffff00]" onPress={() => goCreateAnAccount()}><Text> create an account</Text></TouchableOpacity>
+            
             </View>
             {/* </LinearGradient> */}
         </View>
